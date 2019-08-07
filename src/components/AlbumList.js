@@ -1,23 +1,36 @@
 import React from 'react'
-import {View, Text} from 'react-native'
+import {View} from 'react-native'
 import axios from 'axios'
+import AlbumDetail from './AlbumDetail'
 
 class AlbumList extends React.Component {
+
+    state = {
+        albums: []
+    }
+
     componentDidMount(){
         axios.get('https://rallycoding.herokuapp.com/api/music_albums')
             .then(res => {
-                console.log(res)
+                this.setState({albums: res.data})
             })
             .catch(err => {
                 console.log(err)
             })
+        
+    }
 
-        // console.log('will mount')
+    renderAlbums() {
+        return this.state.albums.map((album, index) => 
+            <AlbumDetail key = {index} album={album}/> 
+        )
     }
     render(){
+
+        console.log(this.state)
         return (
             <View>
-                <Text>Album List!!</Text>
+                {this.renderAlbums()}
             </View>
         )
     }
